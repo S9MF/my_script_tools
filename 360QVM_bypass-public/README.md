@@ -2,7 +2,7 @@
 
 
 
-## 修改
+## 前言
 
 在原项目[360QVM_bypass](https://github.com/Pizz33/360QVM_bypass)的基础上，进行修改增加如下功能：
 
@@ -11,6 +11,9 @@
 * 加上sigthief签名窃取功能
 
 ## 使用
+`！！注意！！` 使用-i参数指定目标PE文件时，该文件不能含有签名，否则会出现如下报错
+![image](https://github.com/S9MF/my_script_tools/assets/48114638/c96537ad-e36a-4c76-ac8d-6727265f5ab2)
+
 `python3 icon-exe.py -h`
 ```
 Author:pant0m & Hyyrent 修改版 v 1.3
@@ -28,7 +31,7 @@ optional arguments:
   -maxc MAX_COLOR_CHANGE, --maxcolorchange MAX_COLOR_CHANGE
                         最大颜色变化范围。
   -i INPUTFILE, --inputfile INPUTFILE
-                        输入目标PE文件。
+                        输入目标PE文件，该文件不能有签名，否则脚本报错。
   -s SIGTHIEF, --sigthief SIGTHIEF
                         输入要伪造签名exe路径。(必填)
 ```
