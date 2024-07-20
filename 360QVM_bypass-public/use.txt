@@ -1,1 +1,0 @@
-python3 icon-exe.py -i test.exe -f idea2000.ico -n 2 -s goland64.exe
